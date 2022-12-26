@@ -25,7 +25,7 @@
 
   export default {
     props: ['send'],
-    name: 'MemberList',
+    name: 'MemberInfo',
     data: () => ({
         memberId : 0,
         member : {},

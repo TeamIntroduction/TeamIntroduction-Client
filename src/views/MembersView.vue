@@ -11,8 +11,8 @@
       <v-main>
         <MemberList 
           :send="partId" 
-          @update="changeMember">
-        </MemberList>
+          @update="changeMember"
+        ></MemberList>
       </v-main>
 
       <v-navigation-drawer
@@ -24,9 +24,11 @@
         stateless
         less
         width="360"
-        @update="clickExitBtn"
       >
-        <Member :send="memberId"></Member>  
+        <Member 
+          :send="memberId"
+          @update="clickExitBtn"
+        ></Member>  
       </v-navigation-drawer>
     </div>
   </v-app>
@@ -58,7 +60,6 @@
       },
       clickExitBtn() {
         this.drawer = false;
-        alert("drawer");
       }
     }
   }
