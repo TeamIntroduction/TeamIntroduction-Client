@@ -1,20 +1,20 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-7 col-lg-4 mb-5 mb-lg-0 wow fadeIn">
+        <div class="row">
+            <div class="col-md-7"> 
                 <div class="card border-0 shadow">
                     <button id="exitBtn" @click="clickExitBtn"><img src="https://cdn-icons-png.flaticon.com/512/61/61208.png"></button>
                     <img src="https://www.bootdey.com/img/Content/avatar/avatar6.png" alt="...">
-                    <div class="card-body p-1-9 p-xl-5">
-                        <div class="mb-4">
-                            <h3 class="h4 mb-0">{{ this.member.name }}</h3>
-                            <span class="text-primary">{{ this.member.part}} | {{ this.member.position }}</span>
+                        <div class="card-body p-1-9 p-xl-5">
+                            <div class="mb-4">
+                                <h3 class="h4 mb-0">{{ this.member.name }}</h3>
+                                <span class="text-primary">{{ this.member.part}} | {{ this.member.position }}</span>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3"><i class="far fa-envelope display-25 me-3 text-secondary"></i>{{ member.email }}</li>
+                                <li class="mb-3"><i class="fas fa-mobile-alt display-25 me-3 text-secondary"></i> {{ member.phoneNumber }} </li>
+                            </ul>
                         </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3"><i class="far fa-envelope display-25 me-3 text-secondary"></i>{{ member.email }}</li>
-                            <li class="mb-3"><i class="fas fa-mobile-alt display-25 me-3 text-secondary"></i> {{ member.phoneNumber }} </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -60,8 +60,12 @@
   }
 </script>
 <style>
-    .container img{
+    .container img {
         height: 100%;
+    }
+
+    .row .col {
+        width: 100%;
     }
 
     .v-list img {
@@ -76,10 +80,6 @@
     .link {
         font-size: 30px;
         color: #BE9A7A;
-    }
-
-    body{
-        margin-top:20px;
     }
 
     .text-secondary, .text-secondary-hover:hover {
@@ -99,6 +99,10 @@
 
     .mb-1-6, .my-1-6 {
         margin-bottom: 1.6rem;
+    }
+
+    .col-md-7 {
+        width: 100%;
     }
 
 </style>

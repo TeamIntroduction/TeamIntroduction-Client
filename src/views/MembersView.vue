@@ -3,13 +3,14 @@
     <v-navigation-drawer
       permanent
       app
+      width="300"
     >
-      <PartList @update="changePart"></PartList>  
+      <DepartmentList @update="changePart"></DepartmentList>  
     </v-navigation-drawer>
 
     <div id="member">
       <v-main>
-        <MemberList 
+        <MemberList
           :send="partId" 
           @update="changeMember"
         ></MemberList>
@@ -35,7 +36,7 @@
 </template>
   
 <script>
-  import PartList from '../components/PartList'
+  import DepartmentList from '../components/DepartmentList'
   import MemberList from '../components/MemberList'
   import Member from '../components/Member'
 
@@ -46,7 +47,7 @@
       drawer: false
     }),
     components: {
-      PartList,
+      DepartmentList,
       MemberList,
       Member
     },
@@ -88,5 +89,4 @@
   v-navigation-drawer{
     width: 500px;
   }
-
 </style>

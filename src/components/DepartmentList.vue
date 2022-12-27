@@ -1,11 +1,16 @@
 <template>
   <v-col>
     <v-treeview
+      ref="treeview"
       rounded
       activatable
+      color="warning"
+      open-on-click
       :items="items"
       @update:active="selected"
-      :open.sync="open"
+      transition
+      item-key="name"
+      return-object
     >
     </v-treeview>
   </v-col>
@@ -16,36 +21,38 @@
     data: () => ({
       items: [
         {
-          id: 0,
-          name: '부서명',
+          name: '한화시스템 ICT',
           children: [],
         },
       ],
-      open:[]
+      open:true
     }),
     created() {
-      let URL = 'http://127.0.0.1:8080/parts';
+      let URL = 'http://127.0.0.1:8080/departments';
       this.$axios
         .get(URL)
         .then(res => {
-          console.log(res);
           let target = res.data.data;
-
+          console.log(target);
           Object.keys(target).forEach(i => {
-            this.items[0].children.push({
-              "id": target[i].id,
-              "name": target[i].name,
-            })
+            this.items[0].children.push(target[i])
           });
-          this.open.push(0);
+          this.$refs.treeview.updateAll(true);
         })
         .catch(err => console.log(err))
     },
+    updated() {
+      
+    },
     methods: {
       selected(node) {
-        this.selection = node;
-        if(node > 0) {
-          this.$emit("update", node);
+        // node 선택해제
+        if (node.length == 0) {
+          return
+        }
+
+        if(!('children' in node[0])) {
+          this.$emit("update", node[0].id);
         }
       }
     }

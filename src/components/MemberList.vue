@@ -5,6 +5,7 @@
     >
         <v-row>
             <v-list two-line>
+            <v-fade-transition group hide-on-leave>           
                 <v-list-item
                     v-for="m in members"
                     :key="m.id"
@@ -12,7 +13,7 @@
                 >
                     <v-list-item-avatar color="grey darken-1">
                     </v-list-item-avatar>
-
+                    
                     <v-list-item-content>
                         <v-list-item-title>{{m.name}}</v-list-item-title>
 
@@ -24,6 +25,7 @@
                         >
                     </div>
                 </v-list-item>
+                </v-fade-transition>
             </v-list>
         </v-row>
     </v-container>
@@ -37,6 +39,7 @@
         partId : 0,
         members : [],
         //memberId : 0
+        show: true
     }),
 
     methods: {
@@ -86,4 +89,6 @@
     .v-main {
         height: 100%;
     }
+
+
 </style>
