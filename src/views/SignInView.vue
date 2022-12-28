@@ -37,13 +37,15 @@
             v-model="dialog"
         >
             <ErrorAlert :errMsg="errorMsg"></ErrorAlert>
-        </v-dialog>  
+        </v-dialog>
     </v-container>
             
 </template>
 
 <script>
     import ErrorAlert from '../components/ErrorAlert'
+    import JSEncrypt  from "jsencrypt";
+    
     export default {
         data() {
         return {
@@ -51,11 +53,35 @@
             username: '',
             password: '',
             errorMsg: '',
-            dialog: false
+            dialog: false,
         }
         },
         components: {
             ErrorAlert
+        },
+        async created() {
+            
+            let URL = 'http://127.0.0.1:8080/asymmetric-key';
+            let res = await this.$axios.post(URL)
+            console.log(res)
+            let target = res.data.data;
+            localStorage.setItem("SYMMETRIC_KEY", this.$generateRandomString(32));
+
+            const encrypt = new JSEncrypt();
+            encrypt.setPublicKey(target["PUBLIC_KEY"]);
+            const encrypted = encrypt.encrypt(localStorage.getItem("SYMMETRIC_KEY"));
+            //console.log(encrypted)
+            console.log(localStorage.getItem("SYMMETRIC_KEY"))
+            URL = 'http://127.0.0.1:8080/symmetric-key';
+            res = await this.$axios.post(URL, {
+                symmetricKey: encrypted
+            });
+            console.log(res);
+            
+            //console.log(cryptico.encrypt(localStorage.getItem("SYMMETRIC_KEY"), target["PUBLIC_KEY"]));
+            //let encrypted = this.$rsa.encrypt('Top-Secret message')
+            //console.log(encrypted)//console.log(this.$cryptico.publicKeyString(target["PUBLIC_KEY"]));
+
         },
         methods: {
             submit() {
@@ -64,13 +90,11 @@
                         username: this.username,
                         password: this.password,
                     })
-                    .then(res => {
-                        console.log(res)
-                        this.$router.push('/members');
-                    })
+                    .then(
+                        this.$router.push('/members')
+                    )
                     .catch(err => {
-                        console.log(err)
-                        this.errorMsg = err.response.data.message
+                        this.errorMsg = err.response.data.message;
                         this.dialog = true;
                     })
                 }

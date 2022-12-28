@@ -41,9 +41,6 @@
         })
         .catch(err => console.log(err))
     },
-    updated() {
-      
-    },
     methods: {
       selected(node) {
         // node 선택해제
