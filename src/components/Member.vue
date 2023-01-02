@@ -46,11 +46,10 @@
                     this.member = {
                         "id": target.id,
                         "name": target.name,
-                        "part": target.part.name,
+                        "part": target.partName,
                         "position": target.position,
                         "phoneNumber": target.phoneNumber,
                         "email": target.email,
-                        "photo": target.photo,
                     }
                 })
                 .catch(err => console.log(err))

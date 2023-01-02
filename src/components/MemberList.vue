@@ -36,7 +36,7 @@
     props: ['send'],
     name: 'MemberList',
     data: () => ({
-        partId : 0,
+        teamId : 0,
         members : [],
         //memberId : 0
         show: true
@@ -51,8 +51,9 @@
 
     watch : {
         send : function(){
-            this.partId=this.$props.send;
-            let URL = `http://127.0.0.1:8080/members?partId=${this.partId}`;
+            this.teamId=this.$props.send;
+            
+            let URL = `http://127.0.0.1:8080/members?teamId=${this.teamId}`;
             this.$axios.get(URL)
                 .then(res => {
                     let target = res.data.data;
@@ -62,7 +63,7 @@
                         this.members.push({
                             "id": target[i].id,
                             "name": target[i].name,
-                            "photo": target[i].photo,
+                            "partName": target[i].partName,
                             "position": target[i].position
                         })
                     });

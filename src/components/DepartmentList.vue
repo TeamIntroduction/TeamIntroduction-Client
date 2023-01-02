@@ -28,12 +28,12 @@
       open:true
     }),
     created() {
-      let URL = 'http://127.0.0.1:8080/departments';
+      let URL = 'http://127.0.0.1:8080/teams';
       this.$axios
         .get(URL)
         .then(res => {
           let target = res.data.data;
-          console.log(target);
+          
           Object.keys(target).forEach(i => {
             this.items[0].children.push(target[i])
           });
@@ -43,12 +43,13 @@
     },
     methods: {
       selected(node) {
+
         // node 선택해제
         if (node.length == 0) {
           return
         }
 
-        if(!('children' in node[0])) {
+        if(node[0].type == '파트') {
           this.$emit("update", node[0].id);
         }
       }
