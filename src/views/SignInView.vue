@@ -45,7 +45,7 @@
 <script>
     import ErrorAlert from '../components/ErrorAlert'
     import JSEncrypt  from "jsencrypt";
-    
+
     export default {
         data() {
         return {
@@ -61,43 +61,44 @@
         },
         async created() {
             
-            let URL = 'http://127.0.0.1:8080/asymmetric-key';
+            let URL = 'http://127.0.0.1:8080/key/asymmetric-key';
             let res = await this.$axios.post(URL)
-            console.log(res)
             let target = res.data.data;
-            localStorage.setItem("SYMMETRIC_KEY", this.$generateRandomString(32));
 
+            localStorage.setItem("SK", this.$generateRandomString(32));
+            
             const encrypt = new JSEncrypt();
-            encrypt.setPublicKey(target["PUBLIC_KEY"]);
-            const encrypted = encrypt.encrypt(localStorage.getItem("SYMMETRIC_KEY"));
-            //console.log(encrypted)
-            console.log(localStorage.getItem("SYMMETRIC_KEY"))
-            URL = 'http://127.0.0.1:8080/symmetric-key';
+            encrypt.setPublicKey(target["PK"]);
+            const encrypted = encrypt.encrypt(localStorage.getItem("SK"));
+            
+            URL = 'http://127.0.0.1:8080/key/symmetric-key';
             res = await this.$axios.post(URL, {
                 symmetricKey: encrypted
-            });
-            console.log(res);
-            
-            //console.log(cryptico.encrypt(localStorage.getItem("SYMMETRIC_KEY"), target["PUBLIC_KEY"]));
-            //let encrypted = this.$rsa.encrypt('Top-Secret message')
-            //console.log(encrypted)//console.log(this.$cryptico.publicKeyString(target["PUBLIC_KEY"]));
-
+            });       
         },
         methods: {
             submit() {
                 let URL = "http://127.0.0.1:8080/login";
+                let key = localStorage.getItem("SK");
+                
+                const cipher = this.$CryptoJS.AES.encrypt(this.password, this.$CryptoJS.enc.Utf8.parse(key), {
+                    iv: this.$CryptoJS.enc.Utf8.parse(key.slice(0,16)),
+                    padding: this.$CryptoJS.pad.Pkcs7,
+                    mode: this.$CryptoJS.mode.CBC
+                });
+
                 this.$axios.post(URL, {
                         username: this.username,
-                        password: this.password,
+                        password: cipher.toString()
                     })
-                    .then(
+                    .then(() => {
                         this.$router.push('/members')
-                    )
+                    })
                     .catch(err => {
                         this.errorMsg = err.response.data.message;
                         this.dialog = true;
                     })
-                }
+            },     
         }
     }
 </script>
@@ -113,14 +114,13 @@
         margin:0 auto;
     }
 
-  .v-alert {
-    margin-bottom: 0px;
-  }
+    .v-alert {
+        margin-bottom: 0px;
+    }
 
-  .v-dialog{
-    position: absolute;
-    top: 15%;
-    width: 20%;
-    
-}
+    .v-dialog{
+        position: absolute;
+        top: 15%;
+        width: 20%;
+    }
 </style>
