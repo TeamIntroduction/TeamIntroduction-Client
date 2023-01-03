@@ -51,7 +51,9 @@
         send : function(){
             this.teamId=this.$props.send;
             
-            let URL = `http://127.0.0.1:8080/members?teamId=${this.teamId}`;
+            const encryptedTeamId = this.$encryptAES(this.teamId.toString())
+            let URL = `http://127.0.0.1:8080/members?teamId=${encodeURIComponent(encryptedTeamId)}`;
+            
             this.$axios.get(URL)
                 .then(res => {
                     let target = res.data.data;
@@ -59,7 +61,7 @@
                     this.members = [];
                     Object.keys(target).forEach(i => {
                         this.members.push({
-                            "id": target[i].id,
+                            "id": this.$decryptAES(target[i].id),
                             "name": target[i].name,
                             "partName": target[i].partName,
                             "position": target[i].position

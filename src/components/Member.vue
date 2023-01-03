@@ -40,7 +40,6 @@
             this.memberId=this.$props.send;
             
             const encryptedMemberId = this.$encryptAES(this.memberId.toString())
-
             let URL = `http://127.0.0.1:8080/members/${encodeURIComponent(encryptedMemberId)}`;
 
             this.$axios.get(URL)

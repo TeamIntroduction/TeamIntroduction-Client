@@ -23,6 +23,17 @@ const methods = {
         });
 
         return cipher.toString()
+    },
+    decryptAES: (data) => {
+
+        let key = localStorage.getItem("SK");
+        const cipher = CryptoJs.AES.decrypt(data, CryptoJs.enc.Utf8.parse(key), {
+            iv: CryptoJs.enc.Utf8.parse(key.slice(0,16)),
+            padding: CryptoJs.pad.Pkcs7,
+            mode: CryptoJs.mode.CBC
+        });
+
+        return parseInt(cipher.toString(CryptoJs.enc.Utf8));
     }
 
 }
@@ -32,5 +43,6 @@ export default {
     install (Vue) {
         Vue.prototype.$generateRandomString = methods.generateRandomString;
         Vue.prototype.$encryptAES = methods.encryptAES;
+        Vue.prototype.$decryptAES = methods.decryptAES;
     }
 }
