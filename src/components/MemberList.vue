@@ -38,13 +38,11 @@
     data: () => ({
         teamId : 0,
         members : [],
-        //memberId : 0
         show: true
     }),
 
     methods: {
         selected(memberId) {
-            //this.memberId = memberId;
             this.$emit("update", memberId);
         }
     },

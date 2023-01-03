@@ -79,17 +79,19 @@
         methods: {
             submit() {
                 let URL = "http://127.0.0.1:8080/login";
-                let key = localStorage.getItem("SK");
+                // let key = localStorage.getItem("SK");
                 
-                const cipher = this.$CryptoJS.AES.encrypt(this.password, this.$CryptoJS.enc.Utf8.parse(key), {
-                    iv: this.$CryptoJS.enc.Utf8.parse(key.slice(0,16)),
-                    padding: this.$CryptoJS.pad.Pkcs7,
-                    mode: this.$CryptoJS.mode.CBC
-                });
+                // const cipher = this.$CryptoJS.AES.encrypt(this.password, this.$CryptoJS.enc.Utf8.parse(key), {
+                //     iv: this.$CryptoJS.enc.Utf8.parse(key.slice(0,16)),
+                //     padding: this.$CryptoJS.pad.Pkcs7,
+                //     mode: this.$CryptoJS.mode.CBC
+                // });
+
+                const encryptedPassword = this.$encryptAES(this.password)
 
                 this.$axios.post(URL, {
                         username: this.username,
-                        password: cipher.toString()
+                        password: encryptedPassword
                     })
                     .then(() => {
                         this.$router.push('/members')
