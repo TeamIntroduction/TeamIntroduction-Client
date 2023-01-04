@@ -33,7 +33,7 @@ const methods = {
             mode: CryptoJs.mode.CBC
         });
 
-        return parseInt(cipher.toString(CryptoJs.enc.Utf8));
+        return cipher.toString(CryptoJs.enc.Utf8);
     }
 
 }

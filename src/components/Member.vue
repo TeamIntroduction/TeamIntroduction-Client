@@ -44,8 +44,9 @@
 
             this.$axios.get(URL)
                 .then(res => {
+                    
                     let target = res.data.data;
-   
+                    target = JSON.parse(this.$decryptAES(target))
                     this.member = {
                         "id": target.id,
                         "name": target.name,

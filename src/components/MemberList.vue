@@ -61,7 +61,7 @@
                     this.members = [];
                     Object.keys(target).forEach(i => {
                         this.members.push({
-                            "id": this.$decryptAES(target[i].id),
+                            "id": parseInt(this.$decryptAES(target[i].id)),
                             "name": target[i].name,
                             "partName": target[i].partName,
                             "position": target[i].position
