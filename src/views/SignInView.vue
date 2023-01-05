@@ -86,7 +86,9 @@
                         username: this.username,
                         password: encryptedPassword
                     })
-                    .then(() => {
+                    .then((res) => {
+                        let target = res.data.data
+                        localStorage.setItem("ACCESS_TOKEN", target.accessToken)
                         this.$router.push('/members')
                     })
                     .catch(err => {
