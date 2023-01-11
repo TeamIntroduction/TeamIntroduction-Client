@@ -1,18 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import axios from 'axios'
 import router from './router/index'
 import common from '@/assets/js/common'
+import axios from 'axios'
+import {setInterceptors} from '@/assets/js/interceptor'
 
 
 Vue.config.productionTip = false
-Vue.prototype.$axios = axios.create({
+let instance = axios.create({
+  baseURL: "http://127.0.0.1:3000",
   withCredentials: true,
-  headers: {
-    Authorization: "Bearer " + localStorage.getItem("ACCESS_TOKEN")
-  }
 });
+setInterceptors(instance)
+
+Vue.prototype.$axios = instance
 Vue.use(common)
 
 new Vue({

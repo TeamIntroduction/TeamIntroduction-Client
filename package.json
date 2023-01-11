@@ -13,6 +13,8 @@
     "cryptico": "^1.0.2",
     "crypto-js": "^4.1.1",
     "jsencrypt": "^3.3.1",
+    "path": "^0.12.7",
+    "request": "^2.88.2",
     "vue": "^2.6.14",
     "vue-crypt": "^1.0.0",
     "vue-cryptico": "^1.0.1",

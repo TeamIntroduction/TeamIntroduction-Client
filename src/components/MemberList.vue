@@ -52,9 +52,8 @@
             this.teamId=this.$props.send;
             
             const encryptedTeamId = this.$encryptAES(this.teamId.toString())
-            let URL = `http://127.0.0.1:8080/members?teamId=${encodeURIComponent(encryptedTeamId)}`;
             
-            this.$axios.get(URL)
+            this.$axios.get(`/members?teamId=${encodeURIComponent(encryptedTeamId)}`)
                 .then(res => {
                     let target = res.data.data;
 

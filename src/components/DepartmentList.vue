@@ -28,8 +28,7 @@
       open:true
     }),
     created() {
-      let URL = 'http://127.0.0.1:8080/teams';
-      this.$axios.get(URL)
+      this.$axios.get('/teams')
         .then(res => {
           let target = res.data.data;
           

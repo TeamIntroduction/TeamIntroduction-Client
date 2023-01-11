@@ -46,23 +46,25 @@
     import ErrorAlert from '../components/ErrorAlert'
     import JSEncrypt  from "jsencrypt";
 
+    const ACCESS_TOKEN = "ACCESS_TOKEN";
+
     export default {
         data() {
-        return {
-            user : [],
-            username: '',
-            password: '',
-            errorMsg: '',
-            dialog: false,
-        }
-        },
+            return {
+                user : [],
+                username: '',
+                password: '',
+                errorMsg: '',
+                dialog: false,
+                accessToken: '',
+            }
+        },        
         components: {
             ErrorAlert
         },
         async created() {
             
-            let URL = 'http://127.0.0.1:8080/key/asymmetric-key';
-            let res = await this.$axios.post(URL)
+            let res = await this.$axios.post('/key/asymmetric-key')
             let target = res.data.data;
 
             localStorage.setItem("SK", this.$generateRandomString(32));
@@ -71,24 +73,20 @@
             encrypt.setPublicKey(target["PK"]);
             const encrypted = encrypt.encrypt(localStorage.getItem("SK"));
             
-            URL = 'http://127.0.0.1:8080/key/symmetric-key';
-            res = await this.$axios.post(URL, {
+            res = await this.$axios.post('key/symmetric-key', {
                 symmetricKey: encrypted
             });       
         },
         methods: {
             submit() {
-                let URL = "http://127.0.0.1:8080/login";
-
                 const encryptedPassword = this.$encryptAES(this.password)
-
-                this.$axios.post(URL, {
+                this.$axios.post("/login", {
                         username: this.username,
                         password: encryptedPassword
                     })
                     .then((res) => {
                         let target = res.data.data
-                        localStorage.setItem("ACCESS_TOKEN", target.accessToken)
+                        localStorage.setItem(ACCESS_TOKEN, target.accessToken);
                         this.$router.push('/members')
                     })
                     .catch(err => {
@@ -96,7 +94,8 @@
                         this.dialog = true;
                     })
             },     
-        }
+        },
+
     }
 </script>
 
