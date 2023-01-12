@@ -8,10 +8,6 @@ export function setInterceptors(instance) {
     instance.interceptors.request.use( (config) => {
             config.headers["Content-Type"] = "application/json; charset=utf-8";
             config.headers["Authorization"] = "Bearer " + localStorage.getItem(ACCESS_TOKEN);
-            // let accessToken = localStorage.getItem("ACCESS_TOKEN");
-            // if (null != accessToken) {
-            //     config.headers["Authorization"] = "Bearer " + accessToken;
-            // }
             return config;
         },
         function (error) {
@@ -29,11 +25,8 @@ export function setInterceptors(instance) {
 
             if (EXPIRED_ACCESS_TOKEN_EXCEPTION == errCode) {
                 localStorage.removeItem(ACCESS_TOKEN);
-
                 await reissueToken(instance);
-                alert('/refresh-token')
                 return await instance(errorAPI);
-                
             }
             router.push('/')
             return Promise.reject(error);
@@ -44,16 +37,13 @@ export function setInterceptors(instance) {
 }
 
 async function reissueToken(instance) {
-    try {
-        let res = await instance.post("/token/refresh-token", {
-            refreshToken: localStorage.getItem(REFRESH_TOKEN)
-        })
-        let target = res.data.data
-        localStorage.setItem(ACCESS_TOKEN, target.accessToken);
-        localStorage.setItem(REFRESH_TOKEN, target.accessToken);
-    } catch (error) {
-        router.push('/')
-    }
+    let res = await instance.post("/token/refresh-token", {
+        refreshToken: localStorage.getItem(REFRESH_TOKEN)
+    })
+    let target = res.data.data
+    localStorage.setItem(ACCESS_TOKEN, target.accessToken);
+    localStorage.setItem(REFRESH_TOKEN, target.refreshToken);
+
 }
 
 

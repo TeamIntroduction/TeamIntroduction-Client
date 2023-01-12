@@ -87,7 +87,7 @@
                     .then((res) => {
                         let target = res.data.data
                         localStorage.setItem(ACCESS_TOKEN, target.accessToken);
-                        localStorage.setItem(REFRESH_TOKEN, target.accessToken);
+                        localStorage.setItem(REFRESH_TOKEN, target.refreshToken);
                         this.$router.push('/members')
                     })
                     .catch(err => {
