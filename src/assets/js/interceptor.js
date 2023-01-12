@@ -1,11 +1,17 @@
 import router from "@/router";
 
 const ACCESS_TOKEN = "ACCESS_TOKEN";
+const REFRESH_TOKEN = "REFRESH_TOKEN";
+const EXPIRED_ACCESS_TOKEN_EXCEPTION = "TOKEN002";
 
 export function setInterceptors(instance) {
     instance.interceptors.request.use( (config) => {
             config.headers["Content-Type"] = "application/json; charset=utf-8";
-            config.headers["Authorization"] = "Bearer " + localStorage.getItem("ACCESS_TOKEN");
+            config.headers["Authorization"] = "Bearer " + localStorage.getItem(ACCESS_TOKEN);
+            // let accessToken = localStorage.getItem("ACCESS_TOKEN");
+            // if (null != accessToken) {
+            //     config.headers["Authorization"] = "Bearer " + accessToken;
+            // }
             return config;
         },
         function (error) {
@@ -17,23 +23,37 @@ export function setInterceptors(instance) {
         function (response) {
             return response;
         },
-        function (error) {
-            let state = error.response.status;
-            if (state) {
-                switch (state) {
-                  case 401:
-                    localStorage.removeItem(ACCESS_TOKEN);
-                    router.push('/')
-                    break;
-                  default:
-                    return Promise.reject(error);
-                }
-              }
+        async function (error) {
+            const errCode = error.response.data.code;
+            let errorAPI = error.config;
+
+            if (EXPIRED_ACCESS_TOKEN_EXCEPTION == errCode) {
+                localStorage.removeItem(ACCESS_TOKEN);
+
+                await reissueToken(instance);
+                alert('/refresh-token')
+                return await instance(errorAPI);
+                
+            }
+            router.push('/')
             return Promise.reject(error);
         }
     );
 
     return instance;
+}
+
+async function reissueToken(instance) {
+    try {
+        let res = await instance.post("/token/refresh-token", {
+            refreshToken: localStorage.getItem(REFRESH_TOKEN)
+        })
+        let target = res.data.data
+        localStorage.setItem(ACCESS_TOKEN, target.accessToken);
+        localStorage.setItem(REFRESH_TOKEN, target.accessToken);
+    } catch (error) {
+        router.push('/')
+    }
 }
 
 

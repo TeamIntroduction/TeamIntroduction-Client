@@ -49,25 +49,25 @@
       }
     },
     created() {
-      let URL = 'https://211.197.235.121/hkl-dsgn/hcg/staging-flow/get-list-with-server';
-      this.$axios
-        .get(URL)
-        .then(res => {
+      // let URL = 'https://211.197.235.121/hkl-dsgn/hcg/staging-flow/get-list-with-server';
+      // this.$axios
+      //   .get(URL)
+      //   .then(res => {
 
-          let target = res.data.data;
+      //     let target = res.data.data;
 
-          console.log(target);
-          Object.keys(target).forEach(e => {
-            this.user.push({
-              "id": target[e].id,
-              "name": target[e].name,
-              "ord": target[e].ord,
-              "serverDtoList": target[e].serverDtoList
-            })
-          });
+      //     console.log(target);
+      //     Object.keys(target).forEach(e => {
+      //       this.user.push({
+      //         "id": target[e].id,
+      //         "name": target[e].name,
+      //         "ord": target[e].ord,
+      //         "serverDtoList": target[e].serverDtoList
+      //       })
+      //     });
           
-        })
-        .catch(err => console.log(err))
+      //   })
+      //   .catch(err => console.log(err))
     }
   }
 </script>

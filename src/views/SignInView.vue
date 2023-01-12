@@ -47,6 +47,7 @@
     import JSEncrypt  from "jsencrypt";
 
     const ACCESS_TOKEN = "ACCESS_TOKEN";
+    const REFRESH_TOKEN = "REFRESH_TOKEN";
 
     export default {
         data() {
@@ -66,7 +67,6 @@
             
             let res = await this.$axios.post('/key/asymmetric-key')
             let target = res.data.data;
-
             localStorage.setItem("SK", this.$generateRandomString(32));
             
             const encrypt = new JSEncrypt();
@@ -87,6 +87,7 @@
                     .then((res) => {
                         let target = res.data.data
                         localStorage.setItem(ACCESS_TOKEN, target.accessToken);
+                        localStorage.setItem(REFRESH_TOKEN, target.accessToken);
                         this.$router.push('/members')
                     })
                     .catch(err => {
