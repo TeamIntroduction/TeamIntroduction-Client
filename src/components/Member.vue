@@ -4,7 +4,7 @@
             <div class="col-md-7"> 
                 <div class="card border-0 shadow">
                     <button id="exitBtn" @click="clickExitBtn"><img src="https://cdn-icons-png.flaticon.com/512/61/61208.png"></button>
-                    <img src="https://www.bootdey.com/img/Content/avatar/avatar6.png" alt="...">
+                    <img id="avater" src="@/assets/images/avater.jpg" alt="...">
                         <div class="card-body p-1-9 p-xl-5">
                             <div class="mb-4">
                                 <h3 class="h4 mb-0">{{ this.member.name }}</h3>
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-
   export default {
     props: ['send'],
     name: 'MemberInfo',
@@ -62,15 +61,25 @@
   }
 </script>
 <style>
-    .container img {
+    .container {
         height: 100%;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #avater {
+        width: 180%;
+        height: 180%;
     }
 
     .row .col {
         width: 100%;
     }
 
-    .v-list img {
+    .v-list {
         width: 100%;
     }
 
