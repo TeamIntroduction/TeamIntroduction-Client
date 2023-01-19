@@ -6,10 +6,9 @@ import common from '@/assets/js/common'
 import axios from 'axios'
 import {setInterceptors} from '@/assets/js/interceptor'
 
-
 Vue.config.productionTip = false
 let instance = axios.create({
-  baseURL: "http://127.0.0.1:3000",
+  baseURL: process.env.VUE_APP_BASE_URL+'/api',
   withCredentials: true,
 });
 setInterceptors(instance)
