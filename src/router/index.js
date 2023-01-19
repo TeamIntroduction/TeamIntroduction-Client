@@ -4,14 +4,12 @@ import UserList from "@/views/UserList"
 import UserInfo from "@/views/UserInfo"
 import SignIn from "@/views/SignInView"
 import Members from "@/views/MembersView"
-// import MemberList from "@/components/MemberList"
 
 Vue.use(VueRouter)
 
 const routes = [
     { path : "/", name : "SignIn", component : SignIn },
     { path : "/members", name : "Members", component : Members },
-    // { path : "/member-list", name : "MemberList", component : MemberList },
     { path : "/user-list", name : "UserList", component : UserList },
     { path : "/user-info", name : "UserInfo", component : UserInfo, props: true },
 ]

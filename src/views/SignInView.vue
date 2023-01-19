@@ -44,6 +44,7 @@
 
 <script>
     import ErrorAlert from '../components/ErrorAlert'
+    import JSEncrypt  from "jsencrypt";
 
     const ACCESS_TOKEN = "ACCESS_TOKEN";
     const REFRESH_TOKEN = "REFRESH_TOKEN";
@@ -63,25 +64,44 @@
             ErrorAlert
         },
         methods: {
-            submit() {
-                const encryptedPassword = this.$encryptAES(this.password)
-                this.$axios.post("/login", {
-                        username: this.username,
-                        password: encryptedPassword
-                    })
-                    .then((res) => {
-                        let target = res.data.data
-                        localStorage.setItem(ACCESS_TOKEN, target.accessToken);
-                        localStorage.setItem(REFRESH_TOKEN, target.refreshToken);
-                        this.$router.push('/members')
-                    })
-                    .catch(err => {
-                        this.errorMsg = err.response.data.message;
-                        this.dialog = true;
-                    })
+            async submit() {
+                await ksExchange(this);
+                await login(this);
             },     
         },
+    };
 
+    async function ksExchange(instance) {
+        let res = await instance.$axios.post('/ks/a-k')
+        
+        let target = res.data.data;
+        localStorage.setItem("SK", instance.$generateRandomString(32));
+        
+        const encrypt = new JSEncrypt();
+        encrypt.setPublicKey(target["PK"]);
+        const encrypted = encrypt.encrypt(localStorage.getItem("SK"));
+        
+        res = await instance.$axios.post('/ks/s-k', {
+            sK: encrypted
+        }); 
+    }
+
+    async function login(instance) {
+        const encryptedPassword = instance.$encryptAES(instance.password)
+        try {
+            let res = await instance.$axios.post("/login", {
+                    username: instance.username,
+                    password: encryptedPassword
+                })
+
+            let target = res.data.data
+            localStorage.setItem(ACCESS_TOKEN, target.accessToken);
+            localStorage.setItem(REFRESH_TOKEN, target.refreshToken);
+            instance.$router.push('/members')
+        } catch (err) {
+            instance.errorMsg = err.response.data.message;
+            instance.dialog = true;
+        }
     }
 </script>
 
