@@ -44,9 +44,9 @@
                 .then(res => {
                     
                     let target = res.data.data;
-                    target = JSON.parse(this.$decryptAES(target))
+                    //target = JSON.parse(this.$decryptAES(target))
                     this.member = {
-                        "id": target.id,
+                        "id": parseInt(this.$decryptAES(target.id)),
                         "name": target.name,
                         "part": target.partName,
                         "position": target.position,
